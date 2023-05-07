@@ -131,7 +131,7 @@ print("SVM: ")
 print("Tocnost train: " + "{:0.3f}".format((accuracy_score(y_train, y_train_p_SVM))))
 print("Tocnost test: " + "{:0.3f}".format((accuracy_score(y_test, y_test_p_SVM))))
 
-# granica odluke pomocu KNN
+# granica odluke pomocu SVM
 plot_decision_regions(X_train_n, y_train, classifier=SVM_model)
 plt.xlabel('x_1')
 plt.ylabel('x_2')

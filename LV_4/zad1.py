@@ -19,40 +19,43 @@ output_variables = ['CO2 Emissions (g/km)']
 X = data[input_variables].to_numpy()
 y = data[output_variables].to_numpy()
 
+#podjela na učenje i testiranje u omjeru 80-20
 X_train , X_test , y_train , y_test = train_test_split (X , y , test_size = 0.2 , random_state =1 )
 
-#b
+#b jedna varijabla u odnosu na CO2 emissions
 plt.scatter(X_train[:,0],y_train,c='blue',s=2)
 plt.scatter(X_test[:,0],y_test,c='red',s=2)
 plt.show()
 
-#c
+#c standardizacija
 plt.figure()
-
 plt.hist(X_train[:,0])
 plt.show()
-# min - max skaliranje
+
+# min - max skaliranje - kako bi se sve svelo na isti interval
 sc = MinMaxScaler ()
-X_train_n = sc . fit_transform ( X_train )
-X_test_n = sc . transform ( X_test )
+
+# transformiranje ulazne veličine 
+X_train_n = sc . fit_transform ( X_train ) #fit_transform() ide na training data
+X_test_n = sc . transform ( X_test )       #transform() ide na testing data
 
 plt.hist(X_train_n[:,0])
 plt.show()
 
-# d
+# d Izgradnja linearnog regresijskog modela
 linearModel = lm . LinearRegression ()
 linearModel . fit ( X_train_n , y_train )
 
-print(linearModel.coef_)
+print(linearModel.coef_) #printanje parametara fi0,fi1,fi2...
 
-# e
+# e Izvršite procjenu izlazne velicine na temelju ulaznih veličina skupa za testiranje
 y_test_p = linearModel . predict ( X_test_n )
-plt.scatter(y_test, y_test_p, s=2)
+plt.scatter(y_test, y_test_p, s=2) # što su rezultati sličniji pravcu, to je točnije
 plt.show()
 
-# f
-MSE = metrics.r2_score(y_test, y_test_p)
-print(MSE)
+# f Najbolji model (savršeno procjenjuje vrijednosti izlazne velicine) za dane podatke ima vrijednost 1
+r2s = metrics.r2_score(y_test, y_test_p)
+print(r2s)
 
-# e
+# g
 # Povecavanjem broja ulaznih podataka imamo bolje učenje, tj. r2_score je blize 1

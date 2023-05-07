@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import ConfusionMatrixDisplay, classification_report, confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay, classification_report, confusion_matrix,accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 
@@ -67,12 +67,12 @@ input_variables = ['bill_length_mm',
 X = df[input_variables].to_numpy()
 y = df[output_variable].to_numpy()
 
-y = y[:, 0] #vazno za d zadatak jer od više matrica radi jednu
+y = y[:, 0] #od 2D matrice s x redaka i jednin stupcem radimo array s jednim retkom
 
 # podjela train/test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 123)
 
-# a) stupcasti dijagram s vrstama
+# a) stupcasti dijagram s vrstama; return_counts vraca broj unikata; values su vrste pingvina a count njihov broj
 train_values, train_count = np.unique(y_train,return_counts=True)
 test_values, test_count = np.unique(y_test,return_counts=True)
 ind = np.arange(3)
@@ -98,12 +98,14 @@ print(LogRegression_model.coef_)
 # [[ 1.64805569 -1.57156768]]
 # U drugom primjeru ima vise parametara modela - matrica dimenzije 3x2
 
-# d)
+# d) Podaci za ucenje su i X_train i y_train
 plot_decision_regions(X_train, y_train, LogRegression_model)
 plt.show()
 
-#e
+#e) Klasifikacija skupa za testiranje
 y_test_p = LogRegression_model.predict(X_test)
+print(accuracy_score(y_test,y_test_p))
+
 cm=confusion_matrix(y_test, y_test_p)
 print (" Matrica zabune : " , cm )
 disp = ConfusionMatrixDisplay ( confusion_matrix ( y_test , y_test_p ) )
@@ -122,11 +124,15 @@ input_variables = ['bill_length_mm',
 X = df[input_variables].to_numpy()
 y = df[output_variable].to_numpy()
 
+y = y[:, 0] #od 2D matrice s x redaka i jednin stupcem radimo array s jednim retkom
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 123)
 
-LogRegression_model = LogisticRegression()
+LogRegression_model = LogisticRegression(max_iter=1000)
 LogRegression_model.fit(X_train, y_train)
 
 y_test_p = LogRegression_model.predict(X_test)
 
 print(classification_report(y_test, y_test_p))
+
+# s više ulaznih veličina, povećavaju se rezultati classification_reports-a

@@ -18,8 +18,10 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # a
 plt.figure()
-plt.scatter(X_train[:,0],X_train[:,1],c=y_train,cmap='coolwarm')
-plt.scatter(X_test[:,0],X_test[:,1],c=y_test,cmap='coolwarm',marker='x')
+customCmap = matplotlib.colors.ListedColormap(["red", "blue"])
+plt.scatter(X_train[:,0],X_train[:,1],c=y_train,cmap=customCmap)
+plt.scatter(X_test[:,0],X_test[:,1],c=y_test,cmap=customCmap,marker='x')
+plt.legend(["x*2" , "x*3"])
 
 
 # b
@@ -27,10 +29,14 @@ LogRegression_model = LogisticRegression ()
 LogRegression_model . fit ( X_train , y_train )
 
 # c
+# u .coef_ se nalaze fi1 i fi2 dok je fi0 zapisan u .intercept_ jer oznacava presjek s y-osi
 print(LogRegression_model.coef_)
 th = LogRegression_model.coef_[0]
+
+# granica odluke definirana kao x2 = -x1*fi1/fi2 - fi0/fi2
 a = -th[0] / th[1]
 x1 = np.linspace(-5, 5)
+
 x2 = a * x1 - (LogRegression_model.intercept_[0]) / th[1]
 
 plt.plot(x1, x2, 'k-')
@@ -66,5 +72,4 @@ plt.figure()
 plt.scatter(X_test[:,0],X_test[:,1],c=y_isTrue,cmap=customCmap)
 plt.show()
 
-print(y_test,'\n',y_pred,'\n',y_isTrue)
 

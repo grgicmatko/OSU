@@ -17,6 +17,8 @@ input_variables = ['Fuel Consumption City (L/100km)','Fuel Consumption Hwy (L/10
 
 output_variables = ['CO2 Emissions (g/km)']
 
+
+# koristimo i kategoricku varijablu 'Fuel Type' pa ju moramo 1-od-K kodirat
 ohe = OneHotEncoder ()
 X_encoded = ohe . fit_transform ( data[['Fuel Type']]) . toarray ()
 data['Fuel Type'] = X_encoded
@@ -52,6 +54,9 @@ print(MSE)
 # Povecavanjem broja ulaznih podataka imamo bolje učenje, tj. r2_score je blize 1
 
 # 2zad
-
+# kolika je maksimalna pogreška u procjeni CO2 plinova
 errArray = abs(y_test_p - y_test)
 id = np.argmax(errArray)
+print(errArray[id,0])
+print(data['Model'].to_numpy()[id])
+

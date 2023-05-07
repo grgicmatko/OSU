@@ -41,7 +41,7 @@ img_quant = np.reshape(rgb_cols[labels],(h,w,c))
 plt.imshow(img_quant)
 plt.show()
 
-
+# binarna slika s obzirom na klasu 
 for i in range(clusters):
     bit_values = labels==[i]
     binary_img = np.reshape(bit_values, (img.shape[0:2]))
